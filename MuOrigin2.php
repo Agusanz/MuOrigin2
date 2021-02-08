@@ -14,15 +14,10 @@ $Abyss = 1;
 //Funciones
 function getTimeYellow()
 {
-	//$unixTime = time();
-	//$realTimeW = date('[Y-m-d] [H:i:s]',$unixTime);
-	//$realTime = fg_color('yellow', $realTimeW);
-
 	$microtime = microtime(true);
 	$micro = sprintf("%06d",($microtime - floor($microtime)) * 1000000);
 	$datetime = new DateTime( date('Y-m-d H:i:s.'.$micro, $microtime) );
 	$realTime = fg_color('yellow', $datetime->format("[Y-m-d] [H:i:s.u]"));
-
 	return $realTime;
 }
 
@@ -105,23 +100,23 @@ function telegram($type,$notification,$msg)
 		{
 			$url='https://api.telegram.org/bot'.$TelegramToken.'/sendMessage';$data=array('chat_id'=>$TelegramChatID,'text'=>$msg,'disable_notification'=>true);
 		}
-    	$options=array('http'=>array('method'=>'POST','header'=>"Content-Type:application/x-www-form-urlencoded\r\n",'content'=>http_build_query($data),),);
-    	$context=stream_context_create($options);
+    		$options=array('http'=>array('method'=>'POST','header'=>"Content-Type:application/x-www-form-urlencoded\r\n",'content'=>http_build_query($data),),);
+    		$context=stream_context_create($options);
 		$result=file_get_contents($url,false,$context);
 		$x = fg_color('green', "[Telegram]");
 		$realTime = getTimeYellow();
 		echo $realTime."\t{$x} {$type} [MSG] - {$msg}\n";	
-    	return $result;
+		return $result;
 	}
 	catch(Exception $e)
-    {
+    	{
 		$svError = $e->getMessage();
 		$x = fg_color('red', "[ERROR catch TelegramFunction]");
 		$realTime = getTimeYellow();
 		echo $realTime."\t{$x} ".$svError."\n";
 		telegram("private", "true", "[ERROR catch TelegramFunction] {$svError}");
-        return;
-    }	
+        	return;
+    	}	
 }
 //Funciones
 
