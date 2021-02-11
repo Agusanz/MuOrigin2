@@ -207,39 +207,39 @@ try
         elseif(($serverDay == "Sun") && ($currentEvent[9] == 1)){$todayEvents = 1;} //Chequea si el evento corresponde al dia Domingo
         else{$todayEvents = 0;}
 
-        if(($serverTime5minutes == $currentEvent[2]) && ($todayEvents == 1)) //Notificación cuando faltan 5 minutos
+        if(($serverTime5minutes == $currentEvent[2]) && ($todayEvents == 1) && ($currentEvent[1] == "Archangel Boss")) //Notificación cuando faltan 5 minutos
         {
-            telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] Se aproxima el Evento: {$currentEvent[1]} en 5 minutos...");
+            telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] Evento: {$currentEvent[1]} en 5 minutos...");
             if($Debug == 1)
             {
                 $x = fg_color('cyan', "[DEBUG]");
 		        $realTime = getTimeYellow();
                 echo $realTime."\t{$x} Dia: {$serverDay} Hora: {$serverTime} TodayEvents: {$todayEvents}\n";
-                echo $realTime."\t{$x} [{$currentEvent[0]}] Se aproxima el Evento: {$currentEvent[1]} en 5 minutos\n";
+                echo $realTime."\t{$x} [{$currentEvent[0]}] Evento: {$currentEvent[1]} en 5 minutos\n";
             }
         }
 
-        if(($serverTime3minutes == $currentEvent[2]) && ($todayEvents == 1) && ($currentEvent[1] == "Archangel Boss")) //Notificación cuando faltan 3 minutos
+        if(($serverTime3minutes == $currentEvent[2]) && ($todayEvents == 1)) //Notificación cuando faltan 3 minutos
         {
-            telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] Se aproxima el Evento: {$currentEvent[1]} en 3 minutos...");
+            telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] Evento: {$currentEvent[1]} en 3 minutos...");
             if($Debug == 1)
             {
                 $x = fg_color('cyan', "[DEBUG]");
 		        $realTime = getTimeYellow();
 		        echo $realTime."\t{$x} Dia: {$serverDay} Hora: {$serverTime} TodayEvents: {$todayEvents}\n";
-                echo $realTime."\t{$x} [{$currentEvent[0]}] Se aproxima el Evento: {$currentEvent[1]} en 3 minutos...\n";
+                echo $realTime."\t{$x} [{$currentEvent[0]}] Evento: {$currentEvent[1]} en 3 minutos...\n";
             }
         }
         /*
         if(($serverTime1minutes == $currentEvent[2]) && ($todayEvents == 1)) //Notificación cuando falta 1 minuto
         {
-            telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] Se aproxima el Evento: {$currentEvent[1]} en 1 minuto...");
+            telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] Evento: {$currentEvent[1]} en 1 minuto...");
             if($Debug == 1)
             {
                 $x = fg_color('cyan', "[DEBUG]");
 		        $realTime = getTimeYellow();
                 echo $realTime."\t{$x} Dia: {$serverDay} Hora: {$serverTime} TodayEvents: {$todayEvents}\n";
-                echo $realTime."\t{$x} [{$currentEvent[0]}] Se aproxima el Evento: {$currentEvent[1]} en 1 minuto...\n";
+                echo $realTime."\t{$x} [{$currentEvent[0]}] Evento: {$currentEvent[1]} en 1 minuto...\n";
             }
         }
         */
