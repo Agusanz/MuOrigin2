@@ -9,7 +9,8 @@
 //date_default_timezone_set('America/Argentina/Buenos_Aires');
 date_default_timezone_set('US/Eastern');
 $Debug = 1;
-$Abyss = 1;
+$event_Abyss = 1;
+$event_Archangel = 1;
 
 //Funciones
 function getTimeYellow()
@@ -179,7 +180,12 @@ try
         array("Abyss",  "Abyss Boss",           "22:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("Abyss",  "Elemental Dungeon",    "22:30",    1,  1,  1,  1,  1,  0,  0,  "true" ),
         array("Abyss",  "Abyss Boss",           "23:30",    1,  1,  1,  1,  1,  1,  1,  "false"),
-        array("Abyss",  "Abyss Boss",           "01:00",    1,  1,  1,  1,  1,  1,  1,  "false")
+        array("Abyss",  "Abyss Boss",           "01:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
+
+        array("World",  "Archangel Boss",       "00:00",    1,  1,  1,  1,  1,  1,  1,  "true"),
+        array("World",  "Archangel Boss",       "06:00",    1,  1,  1,  1,  1,  1,  1,  "true"),
+        array("World",  "Archangel Boss",       "12:00",    1,  1,  1,  1,  1,  1,  1,  "true"),
+        array("World",  "Archangel Boss",       "18:00",    1,  1,  1,  1,  1,  1,  1,  "true")
     );
     $serverTime = date('H:i'); //Hora y Minutos
     $serverDay = date('D'); //Obtiene el dia en formato corto
@@ -188,7 +194,8 @@ try
     $serverTime1minutes = date('H:i',strtotime('+1 minutes',strtotime($serverTime))); //Suma 1 mins a la hora actual para avisar con tiempo
     foreach($Events as $currentEvent) //Revisa el array de eventos 1 por 1
     {
-        if(($Abyss == 0) && ($currentEvent[0] == "Abyss")){continue;} //Si Abyss está desactivado, skipea el evento correspondiente
+        if(($event_Abyss == 0) && ($currentEvent[0] == "Abyss")){continue;} //Si Abyss está desactivado, skipea el evento correspondiente
+        if(($event_Archangel == 0) && ($currentEvent[1] == "Archangel Boss")){continue;} //Si Archangel está desactivado, skipea el evento correspondiente
         
         $todayEvents = 0;
         if(($serverDay == "Mon") && ($currentEvent[3] == 1)){$todayEvents = 1;} //Chequea si el evento corresponde al dia Lunes
@@ -200,7 +207,6 @@ try
         elseif(($serverDay == "Sun") && ($currentEvent[9] == 1)){$todayEvents = 1;} //Chequea si el evento corresponde al dia Domingo
         else{$todayEvents = 0;}
 
-        /*
         if(($serverTime5minutes == $currentEvent[2]) && ($todayEvents == 1)) //Notificación cuando faltan 5 minutos
         {
             telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] Se aproxima el Evento: {$currentEvent[1]} en 5 minutos...");
@@ -212,8 +218,8 @@ try
                 echo $realTime."\t{$x} [{$currentEvent[0]}] Se aproxima el Evento: {$currentEvent[1]} en 5 minutos\n";
             }
         }
-        */
-        if(($serverTime3minutes == $currentEvent[2]) && ($todayEvents == 1)) //Notificación cuando faltan 3 minutos
+
+        if(($serverTime3minutes == $currentEvent[2]) && ($todayEvents == 1) && ($currentEvent[1] == "Archangel Boss")) //Notificación cuando faltan 3 minutos
         {
             telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] Se aproxima el Evento: {$currentEvent[1]} en 3 minutos...");
             if($Debug == 1)
