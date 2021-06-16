@@ -83,29 +83,30 @@ function telegram($type,$notification,$msg)
 {
 	try
 	{
+		global $configs;
 		$TelegramToken = $configs['TelegramToken'];
 		$TelegramIDChat = $configs['TelegramIDChat'];
 		$TelegramIDGroup = $configs['TelegramIDGroup'];
 
 		if($type == "private")
 		{
-			$TelegramChatID = $TelegramIDChat;
+			$TelegramID = $TelegramIDChat;
 		}
 		elseif($type == "group")
 		{
-			$TelegramChatID = $TelegramIDGroup;
+			$TelegramID = $TelegramIDGroup;
 		}
 		else
 		{
-			$TelegramChatID = $TelegramIDChat;
+			$TelegramID = $TelegramIDChat;
 		}
 		if($notification == "true")
 		{
-			$url='https://api.telegram.org/bot'.$TelegramToken.'/sendMessage';$data=array('chat_id'=>$TelegramChatID,'text'=>$msg);
+			$url='https://api.telegram.org/bot'.$TelegramToken.'/sendMessage';$data=array('chat_id'=>$TelegramID,'text'=>$msg);
 		}
 		elseif($notification == "false")
 		{
-			$url='https://api.telegram.org/bot'.$TelegramToken.'/sendMessage';$data=array('chat_id'=>$TelegramChatID,'text'=>$msg,'disable_notification'=>true);
+			$url='https://api.telegram.org/bot'.$TelegramToken.'/sendMessage';$data=array('chat_id'=>$TelegramID,'text'=>$msg,'disable_notification'=>true);
 		}
 		$options=array('http'=>array('method'=>'POST','header'=>"Content-Type:application/x-www-form-urlencoded\r\n",'content'=>http_build_query($data),),);
 		$context=stream_context_create($options);
@@ -256,8 +257,9 @@ try
     if($Debug == 1)
     {
         $x = fg_color('cyan', "[DEBUG]");
-		$realTime = getTimeYellow();
+	$realTime = getTimeYellow();
         echo $realTime."\t{$x} Dia: {$serverDay} Hora: {$serverTime}\n";
+	 telegram("private", "true", "Dia: {$serverDay} Hora: {$serverTime}");
     }
 }
 catch(Exception $e)
