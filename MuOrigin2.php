@@ -4,14 +4,14 @@
 #Twitter: https://twitter.com/Agusanz_92
 #Github: https://github.com/Agusanz
 #Discord: Agusanz#5669
-
 #Crontab: */1 * * * * php /home/agusanz/MuOrigin2/MuOrigin2.php >> /home/agusanz/MuOrigin2/MuOrigin2.log
 
-$configs = include('config.php');
-date_default_timezone_set('US/Eastern');
 $Debug = 0;
 $event_Abyss = 1;
 $event_Archangel = 0;
+$configs = include('config.php');
+//date_default_timezone_set('US/Eastern');
+date_default_timezone_set($configs['Timezone']);
 
 //Funciones
 function getTimeYellow()
