@@ -8,7 +8,7 @@
 #Crontab: */1 * * * * php /home/agusanz/MuOrigin2/MuOrigin2.php >> /home/agusanz/MuOrigin2/MuOrigin2.log
 
 $configs = include('config.php');
-date_default_timezone_set('US/Eastern');
+date_default_timezone_set($configs['Timezone']);
 $Debug = 0;
 $event_Abyss = 1;
 $event_Archangel = 0;
