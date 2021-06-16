@@ -6,19 +6,25 @@
 #Discord: Agusanz#5669
 
 #Crontab: */1 * * * * php /home/agusanz/MuOrigin2/MuOrigin2.php >> /home/agusanz/MuOrigin2/MuOrigin2.log
-//date_default_timezone_set('America/Argentina/Buenos_Aires');
+
+$configs = include('config.php');
 date_default_timezone_set('US/Eastern');
-$Debug = 1;
+$Debug = 0;
 $event_Abyss = 1;
-$event_Archangel = 1;
+$event_Archangel = 0;
 
 //Funciones
 function getTimeYellow()
 {
+	//$unixTime = time();
+	//$realTimeW = date('[Y-m-d] [H:i:s]',$unixTime);
+	//$realTime = fg_color('yellow', $realTimeW);
+
 	$microtime = microtime(true);
 	$micro = sprintf("%06d",($microtime - floor($microtime)) * 1000000);
 	$datetime = new DateTime( date('Y-m-d H:i:s.'.$micro, $microtime) );
 	$realTime = fg_color('yellow', $datetime->format("[Y-m-d] [H:i:s.u]"));
+
 	return $realTime;
 }
 
@@ -64,7 +70,7 @@ function bg_color($color, $string)
 		'cyan' => '46',
 		'light_gray' => '47',
 	);
-		
+
 	if (!isset($background[$color]))
 	{
 		throw new \Exception('Background color is not defined');
@@ -77,21 +83,21 @@ function telegram($type,$notification,$msg)
 {
 	try
 	{
-		$TelegramToken = ""; //Your Telegram token
-		$TelegramChatIDAgusanz = ""; //Your Telegram private chat id
-		$TelegramChatIDGroup = ""; //Your Telegram group chat id
+		$TelegramToken = $configs['TelegramToken'];
+		$TelegramIDChat = $configs['TelegramIDChat'];
+		$TelegramIDGroup = $configs['TelegramIDGroup'];
 
 		if($type == "private")
 		{
-			$TelegramChatID = $TelegramChatIDAgusanz;
+			$TelegramChatID = $TelegramIDChat;
 		}
 		elseif($type == "group")
 		{
-			$TelegramChatID = $TelegramChatIDGroup;
+			$TelegramChatID = $TelegramIDGroup;
 		}
 		else
 		{
-			$TelegramChatID = $TelegramChatIDAgusanz;
+			$TelegramChatID = $TelegramIDChat;
 		}
 		if($notification == "true")
 		{
@@ -101,23 +107,23 @@ function telegram($type,$notification,$msg)
 		{
 			$url='https://api.telegram.org/bot'.$TelegramToken.'/sendMessage';$data=array('chat_id'=>$TelegramChatID,'text'=>$msg,'disable_notification'=>true);
 		}
-    		$options=array('http'=>array('method'=>'POST','header'=>"Content-Type:application/x-www-form-urlencoded\r\n",'content'=>http_build_query($data),),);
-    		$context=stream_context_create($options);
+		$options=array('http'=>array('method'=>'POST','header'=>"Content-Type:application/x-www-form-urlencoded\r\n",'content'=>http_build_query($data),),);
+		$context=stream_context_create($options);
 		$result=file_get_contents($url,false,$context);
 		$x = fg_color('green', "[Telegram]");
 		$realTime = getTimeYellow();
-		echo $realTime."\t{$x} {$type} [MSG] - {$msg}\n";	
+		echo $realTime."\t{$x} {$type} [MSG] - {$msg}\n";
 		return $result;
 	}
 	catch(Exception $e)
-    	{
+	{
 		$svError = $e->getMessage();
 		$x = fg_color('red', "[ERROR catch TelegramFunction]");
 		$realTime = getTimeYellow();
 		echo $realTime."\t{$x} ".$svError."\n";
 		telegram("private", "true", "[ERROR catch TelegramFunction] {$svError}");
-        	return;
-    	}	
+		return;
+	}
 }
 //Funciones
 
@@ -137,7 +143,7 @@ try
         array("World",  "Boss",                 "14:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("World",  "Harmatium",            "15:00",    1,  1,  1,  1,  1,  1,  1,  "true" ),
         array("World",  "Boss",                 "15:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
-        array("World",  "Lost Castle",          "15:00",    1,  1,  1,  1,  1,  1,  1,  "true" ),
+        array("World",  "Lost Castle",          "15:00",    1,  0,  0,  0,  0,  0,  0,  "true" ),
         array("World",  "Boss",                 "16:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("World",  "Boss",                 "17:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("World",  "Harmatium",            "18:00",    1,  1,  1,  1,  1,  1,  1,  "true" ),
@@ -146,11 +152,11 @@ try
         array("World",  "Loren Feast",          "20:00",    1,  1,  1,  1,  1,  1,  0,  "true" ),
         array("World",  "Guild Bonfire",        "20:00",    1,  1,  1,  1,  1,  1,  1,  "true" ),
         array("World",  "Boss",                 "20:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
-        array("World",  "Lost Castle",          "20:30",    1,  1,  1,  1,  1,  1,  1,  "true" ),
-        array("World",  "Guild Battle",         "21:00",    0,  0,  0,  0,  0,  1,  0,  "true" ),
+        array("World",  "Lost Castle",          "20:30",    1,  0,  0,  0,  0,  0,  0,  "true" ),
+        array("World",  "Guild Battle",         "20:30",    0,  0,  0,  0,  1,  0,  0,  "true" ),
         array("World",  "Boss",                 "21:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("World",  "Harmatium",            "21:00",    1,  1,  1,  1,  1,  1,  1,  "true" ),
-        array("World",  "Lost Tower",           "21:00",    1,  1,  1,  1,  1,  0,  0,  "true" ),
+        array("World",  "Lost Tower",           "21:00",    0,  0,  1,  0,  0,  0,  0,  "true" ),
         array("World",  "Chaos Castle",         "21:00",    0,  0,  0,  0,  1,  0,  0,  "true" ),
         array("World",  "Loren Castle Siege",   "21:00",    0,  0,  0,  0,  0,  0,  1,  "true" ),
         array("World",  "Boss",                 "22:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
@@ -158,30 +164,33 @@ try
         array("World",  "Land of Ordeal",       "23:30",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("World",  "Boss",                 "00:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("World",  "Boss",                 "01:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
-
+        //World/Abyss   Event                   Mu Time     Mon Tue Wed Thu Fri Sat Sun Notification
         array("Abyss",  "Abyss Boss",           "10:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("Abyss",  "Abyss Boss",           "11:30",    1,  1,  1,  1,  1,  1,  1,  "false"),
+        array("Abyss",  "Battle Core",          "12:30",    1,  1,  1,  1,  1,  1,  1,  "true"),
         array("Abyss",  "Abyss Boss",           "13:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("Abyss",  "Elemental Challenge",  "13:30",    1,  1,  1,  1,  1,  1,  1,  "true" ),
         array("Abyss",  "Abyss Boss",           "14:30",    1,  1,  1,  1,  1,  1,  1,  "false"),
-        array("Abyss",  "Abyss Castle",         "15:00",    1,  1,  1,  1,  1,  1,  1,  "true" ),
+        array("Abyss",  "Abyss Castle",         "15:00",    0,  0,  1,  0,  0,  0,  0,  "true" ),
         array("Abyss",  "Abyss Boss",           "16:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
+        array("Abyss",  "3vs3 Competition",     "16:00",    0,  0,  0,  0,  1,  0,  0,  "true"),
         array("Abyss",  "Abyss Boss",           "17:30",    1,  1,  1,  1,  1,  1,  1,  "false"),
+        array("Abyss",  "Battle Core",          "18:30",    1,  1,  1,  1,  1,  1,  1,  "true"),
         array("Abyss",  "Elemental Challenge",  "19:00",    1,  1,  1,  1,  1,  1,  1,  "true" ),
         array("Abyss",  "Abyss Boss",           "19:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("Abyss",  "Abyss Loren Feast",    "19:50",    1,  1,  0,  1,  1,  1,  1,  "true" ),
-        array("Abyss",  "Abyss Castle",         "20:30",    1,  1,  1,  1,  1,  1,  1,  "true" ),
+        array("Abyss",  "Abyss Castle",         "20:30",    0,  0,  1,  0,  0,  0,  0,  "true" ),
         array("Abyss",  "Abyss Boss",           "20:30",    1,  1,  1,  1,  1,  1,  1,  "false"),
-        array("Abyss",  "Abyss Tower",          "21:00",    1,  1,  1,  1,  1,  0,  0,  "true" ),
+        array("Abyss",  "Abyss Tower",          "21:00",    0,  0,  0,  1,  0,  0,  0,  "true" ),
         array("Abyss",  "Abyss Guild battle",   "21:00",    0,  0,  0,  0,  0,  1,  0,  "true" ),
         array("Abyss",  "Abyss Castle Siege",   "21:30",    0,  0,  1,  0,  0,  0,  0,  "true" ),
-        array("Abyss",  "Abyss War",            "21:30",    1,  1,  1,  1,  1,  0,  0,  "true" ),
+        array("Abyss",  "Abyss War",            "21:30",    1,  0,  0,  0,  1,  0,  0,  "true" ),
         array("Abyss",  "Tower of Allegiance",  "21:30",    0,  1,  0,  1,  0,  0,  0,  "true" ),
         array("Abyss",  "Abyss Boss",           "22:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("Abyss",  "Elemental Dungeon",    "22:30",    1,  1,  1,  1,  1,  0,  0,  "true" ),
         array("Abyss",  "Abyss Boss",           "23:30",    1,  1,  1,  1,  1,  1,  1,  "false"),
         array("Abyss",  "Abyss Boss",           "01:00",    1,  1,  1,  1,  1,  1,  1,  "false"),
-
+        //World/Abyss   Event                   Mu Time     Mon Tue Wed Thu Fri Sat Sun Notification
         array("World",  "Archangel Boss",       "00:00",    1,  1,  1,  1,  1,  1,  1,  "true"),
         array("World",  "Archangel Boss",       "06:00",    1,  1,  1,  1,  1,  1,  1,  "true"),
         array("World",  "Archangel Boss",       "12:00",    1,  1,  1,  1,  1,  1,  1,  "true"),
@@ -196,7 +205,7 @@ try
     {
         if(($event_Abyss == 0) && ($currentEvent[0] == "Abyss")){continue;} //Si Abyss está desactivado, skipea el evento correspondiente
         if(($event_Archangel == 0) && ($currentEvent[1] == "Archangel Boss")){continue;} //Si Archangel está desactivado, skipea el evento correspondiente
-        
+
         $todayEvents = 0;
         if(($serverDay == "Mon") && ($currentEvent[3] == 1)){$todayEvents = 1;} //Chequea si el evento corresponde al dia Lunes
         elseif(($serverDay == "Tue") && ($currentEvent[4] == 1)){$todayEvents = 1;} //Chequea si el evento corresponde al dia Martes
@@ -209,7 +218,7 @@ try
 
         if(($serverTime5minutes == $currentEvent[2]) && ($todayEvents == 1) && ($currentEvent[1] == "Archangel Boss")) //Notificación cuando faltan 5 minutos
         {
-            telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] Evento: {$currentEvent[1]} en 5 minutos...");
+            telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] {$currentEvent[1]} en 5 minutos...");
             if($Debug == 1)
             {
                 $x = fg_color('cyan', "[DEBUG]");
@@ -221,7 +230,7 @@ try
 
         if(($serverTime3minutes == $currentEvent[2]) && ($todayEvents == 1)) //Notificación cuando faltan 3 minutos
         {
-            telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] Evento: {$currentEvent[1]} en 3 minutos...");
+            telegram("group", "{$currentEvent[10]}", "[{$currentEvent[0]}] {$currentEvent[1]} en 3 minutos...");
             if($Debug == 1)
             {
                 $x = fg_color('cyan', "[DEBUG]");
