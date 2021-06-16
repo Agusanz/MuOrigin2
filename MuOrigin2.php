@@ -1,4 +1,4 @@
-<?php
+W<?php
 #Agusanz - MuOrigin2
 #eMail: Dev@Agusanz.com
 #Twitter: https://twitter.com/Agusanz_92
@@ -9,9 +9,8 @@
 $Debug = 0;
 $event_Abyss = 1;
 $event_Archangel = 0;
-$configs = include('config.php');
-//date_default_timezone_set('US/Eastern');
-date_default_timezone_set($configs['Timezone']);
+include('config.php');
+date_default_timezone_set($config['Timezone']);
 
 //Funciones
 function getTimeYellow()
@@ -83,10 +82,10 @@ function telegram($type,$notification,$msg)
 {
 	try
 	{
-		global $configs;
-		$TelegramToken = $configs['TelegramToken'];
-		$TelegramIDChat = $configs['TelegramIDChat'];
-		$TelegramIDGroup = $configs['TelegramIDGroup'];
+		global $config;
+		$TelegramToken = $config['TelegramToken'];
+		$TelegramIDChat = $config['TelegramIDChat'];
+		$TelegramIDGroup = $config['TelegramIDGroup'];
 
 		if($type == "private")
 		{
