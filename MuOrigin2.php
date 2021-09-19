@@ -1,4 +1,4 @@
-W<?php
+<?php
 #Agusanz - MuOrigin2
 #eMail: Dev@Agusanz.com
 #Twitter: https://twitter.com/Agusanz_92
